@@ -4,32 +4,26 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-/**
- * Resourceful controller for interacting with quizzes
- */
+/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
+const Quiz = use('App/Models/Quiz')
 class QuizController {
   /**
    * Show a list of all quizzes.
    * GET quizzes
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
-  }
-
-  /**
-   * Render a form to be used for creating a new quiz.
-   * GET quizzes/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+  async index({ response, auth }) {
+    const quizzes = await Quiz.query().where('user_id', auth.user.id).with('questions').fetch()
+    if (quizzes) {
+      return response.status(200).send({
+        data: quizzes.toJSON()
+      })
+    }
+    return response.status(400).send({
+      data: 'you no have quizzes created'
+    })
   }
 
   /**
@@ -40,7 +34,26 @@ class QuizController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store({ request, response, auth }) {
+    const data = request.only(['title', 'description'])
+    try {
+      const newQuiz = await Quiz.create({
+        user_id: auth.user.id,
+        ...data
+      })
+      if (newQuiz) {
+        return response.status(201).send({
+          data: `New quiz created, id ${newQuiz.id}`
+        })
+      }
+      return response.status(400).send({
+        data: 'Nothing was created'
+      })
+    } catch (error) {
+      return response.status(400).send({
+        data: error.message
+      })
+    }
   }
 
   /**
@@ -52,19 +65,24 @@ class QuizController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+  async show({ params, response }) {
+    try {
+      const quiz = await Quiz.find(params.id)
+      quiz.load('questions')
+      if (quiz) {
+        return response.status(200).send({
+          data: quiz.toJSON()
+        })
+      }
+      return response.status(400).send({
+        data: 'nothing found'
+      })
+    } catch (error) {
+      return response.status(400).send({
+        data: error.message
+      })
+    }
 
-  /**
-   * Render a form to update an existing quiz.
-   * GET quizzes/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
   }
 
   /**
@@ -75,7 +93,29 @@ class QuizController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update({ params, request, response, auth }) {
+    const data = request.only(['title', 'description'])
+    try {
+      const quiz = await Quiz.find(params.id)
+
+      if (quiz && quiz.user_id == auth.user.id) {
+
+        quiz.merge({ ...data })
+        await quiz.save()
+        return response.status(200).send({
+          data: 'quiz updated success'
+        })
+      }
+
+      return response.status(400).send({
+        data: 'nothing found or you can not update this quiz'
+      })
+    } catch (error) {
+
+      return response.status(400).send({
+        data: error.message
+      })
+    }
   }
 
   /**
@@ -86,7 +126,23 @@ class QuizController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params, response, auth }) {
+    try {
+      const quiz = await Quiz.find(params.id)
+      if (quiz && quiz.user_id == auth.user.id) {
+        await quiz.delete()
+        return response.status(200).send({
+          data: 'quiz deleted success'
+        })
+      }
+      return response.status(400).send({
+        data: 'nothing found or you can not delete this quiz'
+      })
+    } catch (error) {
+      return response.status(400).send({
+        data: error.message
+      })
+    }
   }
 }
 

@@ -20,3 +20,5 @@ Route.group(() => {
   Route.post('/signin', 'AuthController.siginin')
   Route.get('/logout', 'AuthController.logout')
 }).prefix('auth')
+
+Route.resource('quiz', 'QuizController').middleware('auth')

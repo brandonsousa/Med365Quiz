@@ -8,7 +8,7 @@ class AnswerSchema extends Schema {
     this.create('answers', (table) => {
       table.increments()
       table.integer('question_id').unsigned().references('id').inTable('questions').onDelete('CASCADE').onUpdate('CASCADE')
-      table.text('descrition').notNullable()
+      table.text('description').notNullable()
       table.timestamps()
     })
   }

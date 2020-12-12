@@ -19,3 +19,23 @@ Factory.blueprint('App/Models/User', (faker, i, data = {}) => {
         email: faker.email()
     }, data)
 })
+
+Factory.blueprint('App/Models/Quiz', (faker, i, data = {}) => {
+    return Object.assign({
+        title: faker.sentence({ words: 7 }),
+        description: faker.paragraph({ sentences: 3 })
+    }, data)
+})
+
+Factory.blueprint('App/Models/Question', (faker, i, data = {}) => {
+    return Object.assign({
+        description: faker.paragraph({ sentences: 3 }),
+        isMultipleChoice: faker.bool()
+    }, data)
+})
+
+Factory.blueprint('App/Models/Answer', (faker, i, data = {}) => {
+    return Object.assign({
+        description: faker.paragraph({ sentences: 3 })
+    }, data)
+})
