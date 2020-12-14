@@ -29,8 +29,7 @@ Factory.blueprint('App/Models/Quiz', (faker, i, data = {}) => {
 
 Factory.blueprint('App/Models/Question', (faker, i, data = {}) => {
     return Object.assign({
-        description: faker.paragraph({ sentences: 3 }),
-        isMultipleChoice: faker.bool()
+        description: faker.paragraph({ sentences: 3 })
     }, data)
 })
 

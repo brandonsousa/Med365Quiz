@@ -21,4 +21,8 @@ Route.group(() => {
   Route.get('/logout', 'AuthController.logout')
 }).prefix('auth')
 
-Route.resource('quiz', 'QuizController').middleware('auth')
+Route.group(() => {
+  Route.resource('/', 'QuizController').apiOnly()
+  Route.resource('/:quiz_id/questions/', 'QuestionController').only(['index', 'store'])
+  Route.delete('/:quiz_id/questions/:question_id', 'QuestionController.destroy')
+}).prefix('quiz').middleware('auth')
