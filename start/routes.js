@@ -25,9 +25,11 @@ Route.group(() => {
   Route.resource('/', 'QuizController').apiOnly()
   Route.resource('/:quiz_id/questions/', 'QuestionController').only(['index', 'store'])
   Route.delete('/:quiz_id/questions/:question_id', 'QuestionController.destroy')
+  Route.resource('/:quiz_id/questions/:question_id/answers', 'AnswerController').only(['index', 'store'])
+  Route.delete('/:quiz_id/questions/:question_id/answers/:answer_id', 'AnswerController.destroy')
 }).prefix('quiz').middleware('auth')
 
-Route.group(() => { 
+Route.group(() => {
   Route.post('/', 'UserController.store')
-  Route.resource('/', 'UserController').only(['index', 'update', 'destroy']).middleware('auth')
+  Route.resource('/', 'UserController').only(['index', 'update','destroy']).middleware('auth')
 }).prefix('user')
