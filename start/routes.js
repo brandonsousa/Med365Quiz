@@ -26,3 +26,8 @@ Route.group(() => {
   Route.resource('/:quiz_id/questions/', 'QuestionController').only(['index', 'store'])
   Route.delete('/:quiz_id/questions/:question_id', 'QuestionController.destroy')
 }).prefix('quiz').middleware('auth')
+
+Route.group(() => { 
+  Route.post('/', 'UserController.store')
+  Route.resource('/', 'UserController').only(['index', 'update', 'destroy']).middleware('auth')
+}).prefix('user')
