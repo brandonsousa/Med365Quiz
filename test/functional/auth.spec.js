@@ -1,19 +1,16 @@
-const { test, trait } = use('Test/Suite')('Authentication')
+const { test, trait } = use('Test/Suite')('Test the AuthController actions')
 
-/** @type {import('@adonisjs/lucid/src/Factory')} */
-const Factory = use('Factory')
+const payload = require('../payload')
 
 trait('Test/ApiClient')
 
 test('it should return JWT when user do signin', async ({ assert, client }) => {
-  const password = 'pass1234'
-  const user = await Factory.model('App/Models/User').create({
-    password: password
-  })
+  
+  const user = await payload.userPayload()
 
   const response = await client.post('/auth/signin').send({
     email: user.email,
-    password: password
+    password: payload.userPassword()
   }).end()
 
   response.assertStatus(200)

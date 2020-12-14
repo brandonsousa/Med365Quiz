@@ -4,16 +4,21 @@ const Factory = use('Factory')
 class Payload {
     static user = null
     static quiz = null
+    static manyQuizzes = null
     static question = null
+
+    userPassword() {
+        return 'pass1234'
+    }
 
     async userPayload() {
         if (Payload.user != null) {
             return Payload.user
         }
-        const password = 'pass1234'
+
 
         const user = await Factory.model('App/Models/User').create({
-            password: password
+            password: this.userPassword
         })
 
         Payload.user = user.toJSON()
@@ -33,6 +38,19 @@ class Payload {
         Payload.quiz = quiz.toJSON()
 
         return Payload.quiz
+    }
+
+    async manyQuizPayload(numberOfRows, user) {
+        if (Payload.manyQuizzes != null) {
+            return Payload.manyQuizzes
+        }
+        const quizzes = await Factory.model('App/Models/Quiz').createMany(numberOfRows, {
+            user_id: user
+        })
+
+        Payload.manyQuizzes = quizzes
+
+        return Payload.manyQuizzes
     }
 
     async questionPayload(quiz) {
