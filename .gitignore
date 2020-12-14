@@ -10,3 +10,7 @@ tmp
 # The development sqlite file
 database/*.sqlite
 *.sqlite-journal
+
+# lock files
+yarn.lock
+package-lock.json
