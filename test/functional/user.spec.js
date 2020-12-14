@@ -15,10 +15,11 @@ test('must return the logged user data', async ({ assert, client }) => {
     assert.equal(response.body.status, 'success')
 })
 test('must return that the user was created', async ({ assert, client }) => {
+    const { email, username } = await Factory.model('App/Models/User').make()
     const response = await client.post('/user')
         .send({
-            username: 'user.username',
-            email: 'user.email',
+            username: username,
+            email: email,
             password: payload.userPassword()
         })
         .end()

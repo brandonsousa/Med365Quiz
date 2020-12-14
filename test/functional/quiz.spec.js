@@ -1,7 +1,5 @@
 const { test, trait } = use('Test/Suite')('Test the QuizController actions')
 
-/** @type {import('@adonisjs/lucid/src/Factory')} */
-const Factory = use('Factory')
 const payload = require('../payload')
 
 trait('Test/ApiClient')

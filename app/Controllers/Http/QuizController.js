@@ -7,13 +7,7 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Quiz = use('App/Models/Quiz')
 class QuizController {
-  /**
-   * Show a list of all quizzes.
-   * GET quizzes
-   *
-   * @param {object} ctx
-   * @param {Response} ctx.response
-   */
+
   async index({ response, auth }) {
     const quizzes = await Quiz.query().where('user_id', auth.user.id).with('questions').fetch()
     if (quizzes) {
@@ -26,14 +20,6 @@ class QuizController {
     })
   }
 
-  /**
-   * Create/save a new quiz.
-   * POST quizzes
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async store({ request, response, auth }) {
     const data = request.only(['title', 'description'])
     try {
@@ -56,15 +42,6 @@ class QuizController {
     }
   }
 
-  /**
-   * Display a single quiz.
-   * GET quizzes/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async show({ params, response }) {
     try {
       const quiz = await Quiz.find(params.id)
@@ -85,28 +62,17 @@ class QuizController {
 
   }
 
-  /**
-   * Update quiz details.
-   * PUT or PATCH quizzes/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async update({ params, request, response, auth }) {
     const data = request.only(['title', 'description'])
     try {
       const quiz = await Quiz.find(params.id)
-
       if (quiz && quiz.user_id == auth.user.id) {
-
         quiz.merge({ ...data })
         await quiz.save()
         return response.status(200).send({
           data: 'quiz updated success'
         })
       }
-
       return response.status(400).send({
         data: 'nothing found or you can not update this quiz'
       })
@@ -118,14 +84,6 @@ class QuizController {
     }
   }
 
-  /**
-   * Delete a quiz with id.
-   * DELETE quizzes/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async destroy({ params, response, auth }) {
     try {
       const quiz = await Quiz.find(params.id)

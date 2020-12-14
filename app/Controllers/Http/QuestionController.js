@@ -2,7 +2,6 @@
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Quiz = use('App/Models/Quiz')
@@ -10,19 +9,9 @@ const Quiz = use('App/Models/Quiz')
 const Question = use('App/Models/Question')
 
 class QuestionController {
-  /**
-   * Show a list of all questions.
-   * GET questions
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+
   async index({ response, params, auth }) {
-
     const quiz = await Quiz.find(params.quiz_id)
-
     if (quiz && quiz.user_id === auth.user.id) {
       const questions = await Question.query().where('quiz_id', quiz.id).with('answers').fetch()
       if (questions) {
@@ -42,19 +31,9 @@ class QuestionController {
     })
   }
 
-  /**
-   * Create/save a new question.
-   * POST questions
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async store({ request, response, auth, params }) {
     const data = request.only(['description'])
-
     const quiz = await Quiz.find(params.quiz_id)
-
     if (quiz) {
       if (quiz.user_id == auth.user.id) {
         try {
@@ -86,18 +65,9 @@ class QuestionController {
     })
   }
 
-  /**
-   * Delete a question with id.
-   * DELETE questions/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async destroy({ params, response, auth }) {
     const question = await Question.find(params.question_id)
     const quiz = await Quiz.find(params.quiz_id)
-
     if (question && quiz && quiz.user_id === auth.user.id) {
       try {
         await question.delete()
