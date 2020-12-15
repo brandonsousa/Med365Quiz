@@ -10,9 +10,6 @@ class Question extends Model {
     quiz() {
         return this.belongsTo('App/Models/Quiz')
     }
-    survey() {
-      return this.belongsTo('App/Models/Survey')
-    }
 }
 
 module.exports = Question

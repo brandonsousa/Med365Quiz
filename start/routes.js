@@ -35,4 +35,5 @@ Route.group(() => {
 Route.group(() => {
   Route.post('/', 'UserController.store')
   Route.resource('/', 'UserController').only(['index', 'update','destroy']).middleware('auth')
+  Route.get('/surveys', 'UserController.mySurveys').middleware('auth')
 }).prefix('user')

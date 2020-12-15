@@ -7,12 +7,6 @@ class Survey extends Model {
   user() {
     return this.belongsTo('App/Models/User')
   }
-  questions() {
-    return this.hasMany('App/Models/Question')
-  }
-  answer() {
-    return this.hasMany('App/Models/Answer')
-  }
 }
 
 module.exports = Survey
