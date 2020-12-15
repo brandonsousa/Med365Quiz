@@ -6,17 +6,23 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Survey = use("App/Models/Survey")
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Question = use("App/Models/Question")
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Answer = use("App/Models/Answer")
+/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
+const Quiz = use("App/Models/Quiz")
 
 class SurveyController {
   async index({ response }) {
-    const questions = await Question.query().with('answers').fetch()
-    if (questions) {
+    const quizzes = await Quiz.query().with('questions.answers').fetch()
+    if (quizzes) {
+      const quizzesToShow = []
+      for (const quiz of quizzes.toJSON()) {
+        if (quiz.questions.length != 0) {
+          quizzesToShow.push(quiz)
+        }
+      }
       return response.status(200).send({
         status: "success",
-        data: questions.toJSON()
+        data: quizzesToShow
       })
     }
     return response.status(400).send({
