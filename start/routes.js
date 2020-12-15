@@ -16,6 +16,9 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
+Route.get('/', 'SurveyController.index')
+Route.post('/survey/answer', 'SurveyController.store').middleware('auth')
+
 Route.group(() => {
   Route.post('/signin', 'AuthController.siginin')
   Route.get('/logout', 'AuthController.logout')

@@ -9,7 +9,6 @@ test('must list all quiz questions informed in the url by the logged in user', a
     const user = await payload.userPayload()
     const quiz = await payload.quizPayload(user.id)
     await payload.questionPayload(quiz.id)
-    
     const response = await client.get(`/quiz/${quiz.id}/questions`)
         .loginVia(user)
         .end()
@@ -38,9 +37,6 @@ test('must return if it is possible to exclude the question from the questionnai
     const response = await client.delete(`/quiz/${quiz.id}/questions/${question.id}`)
         .loginVia(user)
         .end()
-
     response.assertStatus(200)
     assert.equal(response.body.status, 'success')
 })
-
-

@@ -10,7 +10,6 @@ trait('Auth/Client')
 test('must return the logged user data', async ({ assert, client }) => {
     const user = await payload.userPayload()
     const response = await client.get('/user').loginVia(user).end()
-
     response.assertStatus(200)
     assert.equal(response.body.status, 'success')
 })

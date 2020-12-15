@@ -4,13 +4,14 @@
 const Model = use('Model')
 
 class Question extends Model {
-    
     answers() {
         return this.hasMany('App/Models/Answer')
     }
-
     quiz() {
         return this.belongsTo('App/Models/Quiz')
+    }
+    survey() {
+      return this.belongsTo('App/Models/Survey')
     }
 }
 
