@@ -10,9 +10,9 @@ const Quiz = use('App/Models/Quiz')
 class AnswerController {
 
   async index({ params, response, auth }) {
-    if (this.isOWner(params.question_id, auth.user.id)) {
+    if (this.isOWner(params.question_id, params.quiz_id, auth.user.id)) {
       const answers = await Answer.query().where('question_id', params.question_id).fetch()
-      if (answers) {
+      if (answers.rows.length != 0) {
         return response.status(200).send({
           status: 'success',
           data: answers.toJSON()
@@ -27,7 +27,7 @@ class AnswerController {
 
   async store({ request, response, auth, params }) {
     const data = request.only(['description'])
-    if (this.isOWner(params.question_id, auth.user.id)) {
+    if ( await this.isOWner(params.question_id, params.quiz_id, auth.user.id) && data.description) {
       try {
         const answer = await Answer.create({
           question_id: params.question_id,
@@ -48,7 +48,7 @@ class AnswerController {
     }
     return response.status(401).send({
       status: 'error',
-      data: 'Error, you are trying to add a answer to a question that is not yours'
+      data: 'Error, invalid data or you are trying to add a answer to a question that is not yours'
     })
   }
 
@@ -74,11 +74,15 @@ class AnswerController {
     })
   }
 
-  async isOWner(question_id, user) {
+  async isOWner(question_id, quiz_id, user) {
     const question = await Question.find(question_id)
-    const quiz = await Quiz.find(question.quiz_id)
-    const isOWner = quiz.user_id === user ? true : false
-    return isOWner
+    if (question) {
+      const quiz = await Quiz.find(quiz_id)
+      if (quiz && question.quiz_id == quiz.id) {
+        return quiz.user_id === user ? true : false
+      }
+    }
+    return false
   }
 }
 
