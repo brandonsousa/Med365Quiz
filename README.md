@@ -47,10 +47,13 @@ _tests performed on the SQLite database_
       - SurveyController
         - Retrieve all with questions
 
-  ![](https://github.com/brandonsousa/Med365Quiz/blob/main/assets/tests.png)
+
+<img src=”https://github.com/brandonsousa/Med365Quiz/blob/main/assets/tests.PNG”  height="350" width="500">
+
+
 
 ## To Use
-These are the routes you have in the api, with names, verbs and middleware
-![](https://github.com/brandonsousa/Med365Quiz/blob/main/assets/routes.png)
+[These are the routes](https://github.com/brandonsousa/Med365Quiz/blob/main/assets/routes.png) you have in the api, with names, verbs and middleware
+<img src=”https://github.com/brandonsousa/Med365Quiz/blob/main/assets/routes.png”  height="350" width="500">
 
 import [this file](https://github.com/brandonsousa/Med365Quiz/blob/main/assets/Insomnia_2020-12-15.json) configured in your [insomnia](https://insomnia.rest/)
