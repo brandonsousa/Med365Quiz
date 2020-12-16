@@ -55,7 +55,7 @@ class UserController {
       'INNER JOIN questions AS q ON a.question_id = q.id ' +
       'INNER JOIN quizzes AS quiz ON q.quiz_id = quiz.id ' +
       'WHERE s.user_id = ?', [auth.user.id])
-    if (surveys) {
+    if (surveys[0].length != 0) {
       return response.status(200).send({
         status: 'success',
         data: surveys[0]
