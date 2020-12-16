@@ -68,7 +68,7 @@ class QuestionController {
   async destroy({ params, response, auth }) {
     const question = await Question.find(params.question_id)
     const quiz = await Quiz.find(params.quiz_id)
-    if (question && quiz && quiz.user_id === auth.user.id) {
+    if (question && quiz && question.quiz_id == quiz.id && quiz.user_id === auth.user.id) {
       try {
         await question.delete()
         return response.status(200).send({
