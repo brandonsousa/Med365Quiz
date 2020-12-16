@@ -9,7 +9,7 @@ const Database = use('Database')
 class UserController {
 
   async index({ response, auth }) {
-    const me = await User.query().where('id', auth.user.id).with('quizzes.questions.answers').fetch()
+    const me = await User.find(auth.user.id)
     if (me) {
       return response.status(200).send({
         status: 'success',

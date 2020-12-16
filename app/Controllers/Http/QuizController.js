@@ -9,7 +9,7 @@ const Quiz = use('App/Models/Quiz')
 class QuizController {
 
   async index({ response, auth }) {
-    const quizzes = await Quiz.query().where('user_id', auth.user.id).with('questions').fetch()
+    const quizzes = await Quiz.query().where('user_id', auth.user.id).with('questions.answers').fetch()
     if (quizzes) {
       return response.status(200).send({
         data: quizzes.toJSON()
