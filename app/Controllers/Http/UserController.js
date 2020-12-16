@@ -25,7 +25,7 @@ class UserController {
   async store({ request, response }) {
     const data = request.only(['username', 'email', 'password'])
     try {
-      if (data.password.length > 6) {
+      if (data.password.length > 6 && this.IsEmail(data.email) && data.username.length > 6) {
         const user = await User.create({
           ...data
         })
@@ -38,7 +38,7 @@ class UserController {
       }
       return response.status(400).send({
         status: 'error',
-        data: 'Error, user not created'
+        data: 'Error, user not created, check data'
       })
     } catch (error) {
       return response.status(400).send({
@@ -71,7 +71,7 @@ class UserController {
     const data = request.only(['username', 'email'])
     try {
       const user = await User.find(auth.user.id)
-      if (user) {
+      if (user && this.IsEmail(data.email) && data.username.length > 6) {
         user.merge({ ...data })
         await user.save()
         return response.status(200).send({
@@ -111,6 +111,11 @@ class UserController {
       status: 'error',
       data: 'Error, user not exist or not is you'
     })
+  }
+
+  IsEmail(email) {
+    var emailPattern = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+    return emailPattern.test(email)
   }
 }
 
