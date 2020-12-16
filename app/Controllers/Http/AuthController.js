@@ -1,7 +1,6 @@
 'use strict'
 
 class AuthController {
-
     async siginin({ request, response, auth }) {
         const { email, password } = request.only(['email', 'password'])
         try {
@@ -13,20 +12,6 @@ class AuthController {
             })
         }
     }
-
-    async logout({ auth, response }) {
-        try {
-            await auth.logout()
-            return response.status(200).send({
-                logout: true
-            })
-        } catch (error) {
-            return response.status(400).send({
-                logout: error.message
-            })
-        }
-    }
-
 }
 
 module.exports = AuthController
