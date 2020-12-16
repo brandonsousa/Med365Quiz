@@ -3,7 +3,6 @@ Api to evaluate quiz developed in the Med365 challenge
 
 **Used [adonisJS v4.1](https://adonisjs.com/)**
 
-
 ## To run in development/production
   1. install the dependencies by terminal with yarn or npm
   2. configure the _.env_ file with your information
@@ -18,6 +17,7 @@ Api to evaluate quiz developed in the Med365 challenge
         or
         > node .\server.js
 ## To run test
+_tests performed on the SQLite database_
   1. install the dependencies by terminal with yarn or npm
   2. on terminal run:
       > adonis test
@@ -32,7 +32,8 @@ Api to evaluate quiz developed in the Med365 challenge
         - Try create with registered email
       - QuizController
         - Store
-        - Retrieve with question and answer
+        - Retrieve all with question and answer
+        - Retrieve by id with question and answer
         - Update
         - Destroy
       - QuestionController
@@ -45,6 +46,9 @@ Api to evaluate quiz developed in the Med365 challenge
         - Store
       - SurveyController
         - Retrieve all with questions
+
+  ![](./assets/tests.png)
+
 ## To Use
 These are the routes you have in the api, with names, verbs and middleware
 ![](./assets/routes.png)
